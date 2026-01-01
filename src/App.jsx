@@ -18,31 +18,6 @@ export default function PointageMensuel() {
   const getPrixKey = () => `prix_journee`;
 
   // Charger les données avec localStorage
-  const chargerDonnees = () => {
-    try {
-      const data = localStorage.getItem(getStorageKey());
-      if (data) {
-        setEntrees(JSON.parse(data));
-      } else {
-        setEntrees([]);
-      }
-    } catch (error) {
-      console.log('Aucune donnée trouvée pour ce mois');
-      setEntrees([]);
-    }
-  };
-
-  const chargerPrix = () => {
-    try {
-      const prix = localStorage.getItem(getPrixKey());
-      if (prix) {
-        setPrixJournee(prix);
-      }
-    } catch (error) {
-      console.log('Aucun prix enregistré');
-    }
-  };
-
   const sauvegarderDonnees = () => {
     try {
       localStorage.setItem(getStorageKey(), JSON.stringify(entrees));
@@ -53,8 +28,36 @@ export default function PointageMensuel() {
 
   // Charger au démarrage et lors du changement de mois
   useEffect(() => {
+    const chargerDonnees = () => {
+      try {
+        const data = localStorage.getItem(getStorageKey());
+        if (data) {
+          setEntrees(JSON.parse(data));
+        } else {
+          setEntrees([]);
+        }
+      // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        console.log('Aucune donnée trouvée pour ce mois');
+        setEntrees([]);
+      }
+    };
+
+    const chargerPrix = () => {
+      try {
+        const prix = localStorage.getItem(getPrixKey());
+        if (prix) {
+          setPrixJournee(prix);
+        }
+      // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        console.log('Aucun prix enregistré');
+      }
+    };
+
     chargerDonnees();
     chargerPrix();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mois, annee]);
 
   // Sauvegarder automatiquement les données
@@ -62,6 +65,7 @@ export default function PointageMensuel() {
     if (entrees.length > 0) {
       sauvegarderDonnees();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entrees]);
 
   // Sauvegarder le prix automatiquement
